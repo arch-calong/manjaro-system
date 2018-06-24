@@ -12,7 +12,7 @@ arch=('any')
 url="http://www.manjaro.org"
 license=('GPL')
 # groups=('base')
-depends=('mkinitcpio>=0.12.0-2' 'pcmciautils>=018-5' 'linux>=3.4' 'pacman>=5.0' 'coreutils' 'sed' 'awk')
+depends=('mkinitcpio>=0.12.0-2' 'linux>=3.4' 'pacman>=5.0' 'coreutils' 'sed' 'awk')
 install=manjaro-update-system.sh
 source=('fsck.overlay')
 sha256sums=('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
