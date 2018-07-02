@@ -73,21 +73,25 @@ post_upgrade() {
 
 	# Fix js52 upgrading
 	pacman -Q js52 &> /tmp/cmd1
-	if [ "$(vercmp $(grep 'js52' /tmp/cmd1 | cut -d' ' -f2) 52.7.3-1)" -le 0 ]; then
-		if [ -e "/usr/lib/libmozjs-52.so.0" ]; then
-			msg "Fix js52 upgrade ..."
-			rm -f /usr/lib/libmozjs-52.so.0
-			rm /var/lib/pacman/db.lck &> /dev/null
-			pacman --noconfirm -S js52
+	if [ "$(grep 'js52' /tmp/cmd1 | cut -d' ' -f1)" == "js52" ]; then
+		if [ "$(vercmp $(grep 'js52' /tmp/cmd1 | cut -d' ' -f2) 52.7.3-1)" -le 0 ]; then
+			if [ -e "/usr/lib/libmozjs-52.so.0" ]; then
+				msg "Fix js52 upgrade ..."
+				rm -f /usr/lib/libmozjs-52.so.0
+				rm /var/lib/pacman/db.lck &> /dev/null
+				pacman --noconfirm -S js52
+			fi
 		fi
 	fi
 
 	# Fix Firefox upgrading
 	pacman -Q firefox &> /tmp/cmd1
-	if [ "$(vercmp $(grep 'firefox' /tmp/cmd1 | cut -d' ' -f2) 59.0.1-0)" -le 0 ]; then
-		if [ -e "/usr/lib/firefox/distribution/distribution.ini" ]; then
-			msg "Fix firefox upgrade ..."
-			rm -f /usr/lib/firefox/distribution/distribution.ini
+	if [ "$(grep 'firefox' /tmp/cmd1 | cut -d' ' -f1)" == "firefox" ]; then
+		if [ "$(vercmp $(grep 'firefox' /tmp/cmd1 | cut -d' ' -f2) 59.0.1-0)" -le 0 ]; then
+			if [ -e "/usr/lib/firefox/distribution/distribution.ini" ]; then
+				msg "Fix firefox upgrade ..."
+				rm -f /usr/lib/firefox/distribution/distribution.ini
+			fi
 		fi
 	fi
 
@@ -131,16 +135,18 @@ post_upgrade() {
 	# fix upgrading mesa when version is 17.0.1-1 or less
 	pacman -Q mesa &> /tmp/cmd1
 	pacman -Q lib32-mesa &> /tmp/cmd2
-	if [ "$(vercmp $(grep 'mesa' /tmp/cmd1 | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
-		PKG_LIST="mhwd mesa libglvnd"
-		if [ "$(grep 'lib32-mesa' /tmp/cmd2 | cut -d' ' -f1)" == "lib32-mesa" ]; then
-			if [ "$(vercmp $(grep 'lib32-mesa' /tmp/cmd2 | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
-				PKG_LIST="${PKG_LIST} lib32-mesa lib32-libglvnd"
+	if [ "$(grep 'mesa' /tmp/cmd1 | cut -d' ' -f1)" == "mesa" ]; then 
+		if [ "$(vercmp $(grep 'mesa' /tmp/cmd1 | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
+			PKG_LIST="mhwd mesa libglvnd"
+			if [ "$(grep 'lib32-mesa' /tmp/cmd2 | cut -d' ' -f1)" == "lib32-mesa" ]; then
+				if [ "$(vercmp $(grep 'lib32-mesa' /tmp/cmd2 | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
+					PKG_LIST="${PKG_LIST} lib32-mesa lib32-libglvnd"
+				fi
 			fi
+			msg "Fix mesa-stack ..."
+			rm /var/lib/pacman/db.lck &> /dev/null
+			pacman --noconfirm -S $PKG_LIST --force
 		fi
-		msg "Fix mesa-stack ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
-		pacman --noconfirm -S $PKG_LIST --force
 	fi
 
 	# avoid upgrading problems when lib32-libnm-glib46 is installed and lib32-libnm-glib is not, and we want to install lib32-libnm-glib.
@@ -604,7 +610,6 @@ post_upgrade() {
 	fi
 
 	# fix pamac on systems without Gnome session
-        detectDE
 	pacman -Qq pamac &> /tmp/cmd1
 	packages="lxpolkit"
 	if [ "$(vercmp $2 20130905-1)" -lt 0 ] && [ "$DE" != "gnome" ] && [ "$(grep 'pamac' /tmp/cmd1)" == "pamac" ]; then
