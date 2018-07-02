@@ -610,6 +610,7 @@ post_upgrade() {
 	fi
 
 	# fix pamac on systems without Gnome session
+	detectDE
 	pacman -Qq pamac &> /tmp/cmd1
 	packages="lxpolkit"
 	if [ "$(vercmp $2 20130905-1)" -lt 0 ] && [ "$DE" != "gnome" ] && [ "$(grep 'pamac' /tmp/cmd1)" == "pamac" ]; then
