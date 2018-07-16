@@ -41,6 +41,19 @@ detectDE()
 }
 
 post_upgrade() {
+	# Fix libutf8proc upgrading
+	pacman -Q libutf8proc &> /tmp/cmd1
+	if [ "$(grep 'libutf8proc' /tmp/cmd1 | cut -d' ' -f1)" == "libutf8proc" ]; then
+		if [ "$(vercmp $(grep 'libutf8proc' /tmp/cmd1 | cut -d' ' -f2) 2.1.1-3)" -le 0 ]; then
+			if [ -e "/usr/lib/libutf8proc.so.2" ]; then
+				msg "Fix libutf8proc upgrade ..."
+				rm -f /usr/lib/libutf8proc.so.2
+				rm /var/lib/pacman/db.lck &> /dev/null
+				pacman --noconfirm -S libutf8proc
+			fi
+		fi
+	fi
+
 	# nvidia legacy changes (may 2018)
 	pacman -Qq nvidia-utils &> /tmp/cmd1
 	pacman -Qq mhwd-nvidia-390xx &> /tmp/cmd2
