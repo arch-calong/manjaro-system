@@ -42,8 +42,8 @@ detectDE()
 
 post_upgrade() {
 	# Fix libutf8proc upgrading
-	if [ "$(pacman -Qq libutf8proc)" == "libutf8proc" ]; then
-		if [ "$(vercmp $(pacman -Q libutf8proc | cut -d' ' -f2) 2.1.1-3)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'libutf8proc' -m1)" == "libutf8proc" ]; then
+		if [ "$(vercmp $(pacman -Q | grep 'libutf8proc' -m1 | cut -d' ' -f2) 2.1.1-3)" -le 0 ]; then
 			if [ -e "/usr/lib/libutf8proc.so.2" ]; then
 				msg "Fix libutf8proc upgrade ..."
 				rm -f /usr/lib/libutf8proc.so.2
@@ -54,8 +54,8 @@ post_upgrade() {
 	fi
 
 	# nvidia legacy changes (may 2018)
-	if [ "$(pacman -Qq nvidia-utils)" == "nvidia-utils" ]; then
-		if [ "$(pacman -Qq mhwd-nvidia-390xx)" != "mhwd-nvidia-390xx" ]; then
+	if [ "$(pacman -Qq | grep 'nvidia-utils' -m1)" == "nvidia-utils" ]; then
+		if [ "$(pacman -Qq | grep 'mhwd-nvidia-390xx' -m1)" != "mhwd-nvidia-390xx" ]; then
 			msg "Updating mhwd database"
 			rm /var/lib/pacman/db.lck &> /dev/null
 			pacman --noconfirm -S mhwd-db
@@ -80,8 +80,8 @@ post_upgrade() {
 	fi
 
 	# Fix js52 upgrading
-	if [ "$(pacman -Qq js52)" == "js52" ]; then
-		if [ "$(vercmp $(pacman -Q js52 | cut -d' ' -f2) 52.7.3-1)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'js52' -m1)" == "js52" ]; then
+		if [ "$(vercmp $(pacman -Q | grep 'js52' -m1 | cut -d' ' -f2) 52.7.3-1)" -le 0 ]; then
 			if [ -e "/usr/lib/libmozjs-52.so.0" ]; then
 				msg "Fix js52 upgrade ..."
 				rm -f /usr/lib/libmozjs-52.so.0
@@ -92,8 +92,8 @@ post_upgrade() {
 	fi
 
 	# Fix Firefox upgrading
-	if [ "$(pacman -Qq firefox)" == "firefox" ]; then
-		if [ "$(vercmp $(pacman -Q firefox | cut -d' ' -f2) 59.0.1-0)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'firefox' -m1)" == "firefox" ]; then
+		if [ "$(vercmp $(pacman -Q | grep 'firefox' -m1 | cut -d' ' -f2) 59.0.1-0)" -le 0 ]; then
 			if [ -e "/usr/lib/firefox/distribution/distribution.ini" ]; then
 				msg "Fix firefox upgrade ..."
 				rm -f /usr/lib/firefox/distribution/distribution.ini
@@ -102,8 +102,8 @@ post_upgrade() {
 	fi
 
 	# Fix upgrading sddm version is 0.17.0-4 or less
-	if [ "$(pacman -Qq sddm)" == "sddm" ]; then 
-		if [ "$(vercmp $(pacman -Q sddm | cut -d' ' -f2) 0.17.0-4)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'sddm' -m1)" == "sddm" ]; then 
+		if [ "$(vercmp $(pacman -Q | grep 'sddm' -m1 | cut -d' ' -f2) 0.17.0-4)" -le 0 ]; then
 			msg "Fix sddm upgrade ..."
 			rm /var/lib/pacman/db.lck &> /dev/null
 			if [ -e "/etc/sddm.conf" ]; then
@@ -120,8 +120,8 @@ post_upgrade() {
 	fi
 
 	# fix upgrading ca-certificates-utils when version is 20160507-1 or less
-	if [ "$(pacman -Qq ca-certificates-utils)" == "ca-certificates-utils" ]; then 
-		if [ "$(vercmp $(pacman -Q ca-certificates-utils | cut -d' ' -f2) 20160507-1)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'ca-certificates-utils' -m1)" == "ca-certificates-utils" ]; then 
+		if [ "$(vercmp $(pacman -Q | grep 'ca-certificates-utils' -m1 | cut -d' ' -f2) 20160507-1)" -le 0 ]; then
 			msg "Fix ca-certificates-utils upgrade ..."
 			rm /var/lib/pacman/db.lck &> /dev/null
 			pacman --noconfirm -Syw ca-certificates-utils
@@ -137,11 +137,11 @@ post_upgrade() {
 	fi
 
 	# fix upgrading mesa when version is 17.0.1-1 or less
-	if [ "$(pacman -Qq mesa)" == "mesa" ]; then 
-		if [ "$(vercmp $(pacman -Q mesa | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'mesa' -m1)" == "mesa" ]; then 
+		if [ "$(vercmp $(pacman -Q | grep 'mesa' -m1 | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
 			PKG_LIST="mhwd mesa libglvnd"
-			if [ "$(pacman -Qq lib32-mesa)" == "lib32-mesa" ]; then
-				if [ "$(vercmp $(pacman -Q lib32-mesa | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
+			if [ "$(pacman -Qq | grep 'lib32-mesa' -m1)" == "lib32-mesa" ]; then
+				if [ "$(vercmp $(pacman -Q | grep 'lib32-mesa' -m1 | cut -d' ' -f2) 17.0.1-1)" -le 0 ]; then
 					PKG_LIST="${PKG_LIST} lib32-mesa lib32-libglvnd"
 				fi
 			fi
@@ -155,8 +155,8 @@ post_upgrade() {
 	# and lib32-libnm-glib is not, and we want to install lib32-libnm-glib.
 	# ldconfig creates varous symlink in /usr/lib32/ from the lib32-libnm-glib46
 	# packages but lib32-libnm-glib provides those files.
-	if [ "$(pacman -Qq lib32-libnm-glib)" != "lib32-libnm-glib" ]; then
-		if [ "$(pacman -Qq lib32-libnm-glib46)" == "lib32-libnm-glib46" ]; then
+	if [ "$(pacman -Qq | grep 'lib32-libnm-glib' -m1)" != "lib32-libnm-glib" ]; then
+		if [ "$(pacman -Qq | grep 'lib32-libnm-glib46' -m1)" == "lib32-libnm-glib46" ]; then
 			rm /var/lib/pacman/db.lck &> /dev/null
 			pacman --noconfirm --force -S lib32-libnm-glib
 		fi
@@ -166,15 +166,15 @@ post_upgrade() {
 	# installed and lib32-curl is not, and we want to install lib32-curl.
 	# ldconfig creates /usr/lib32/libcurl.so.4 from the lib32-libcurl-{gnutls,compat}
 	# packages but lib32-curl provides that file.
-	if [ "$(pacman -Qq lib32-curl)" != "lib32-curl" ]; then
-		if [ "$(pacman -Qq lib32-libcurl-gnutls)" == "lib32-libcurl-gnutls" ]; then
-			if [ "$(vercmp $(pacman -Q lib32-libcurl-gnutls | cut -d' ' -f2) 7.52.1-1)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'lib32-curl' -m1)" != "lib32-curl" ]; then
+		if [ "$(pacman -Qq | grep 'lib32-libcurl-gnutls' -m1)" == "lib32-libcurl-gnutls" ]; then
+			if [ "$(vercmp $(pacman -Q | grep 'lib32-libcurl-gnutls' -m1 | cut -d' ' -f2) 7.52.1-1)" -le 0 ]; then
 				rm /var/lib/pacman/db.lck &> /dev/null
 				pacman --noconfirm --force -S lib32-curl
 			fi
 		fi
-		if [ "$(pacman -Qq lib32-libcurl-compat)" == "lib32-libcurl-compat" ]; then 
-			if [ "$(vercmp $(pacman -Q lib32-libcurl-compat | cut -d' ' -f2) 7.52.1-1)" -le 0 ]; then
+		if [ "$(pacman -Qq | grep 'lib32-libcurl-compat' -m1)" == "lib32-libcurl-compat" ]; then 
+			if [ "$(vercmp $(pacman -Q | grep 'lib32-libcurl-compat' -m1 | cut -d' ' -f2) 7.52.1-1)" -le 0 ]; then
 				rm /var/lib/pacman/db.lck &> /dev/null
 				pacman --noconfirm --force -S lib32-curl
 			fi
@@ -182,8 +182,8 @@ post_upgrade() {
 	fi
 
 	# fix upgrading ttf-dejavu when version is 2.35-1 or less
-	if [ "$(pacman -Qq ttf-dejavu)" == "ttf-dejavu" ]; then 
-		if [ "$(vercmp $(pacman -Q ttf-dejavu | cut -d' ' -f2) 2.35-1)" -le 0 ]; then
+	if [ "$(pacman -Qq | grep 'ttf-dejavu' -m1)" == "ttf-dejavu" ]; then 
+		if [ "$(vercmp $(pacman -Q | grep 'ttf-dejavu' -m1 | cut -d' ' -f2) 2.35-1)" -le 0 ]; then
 			msg "Fix ttf-dejavu upgrade ..."
 			rm /var/lib/pacman/db.lck &> /dev/null
 			pacman --noconfirm --force -S ttf-dejavu
@@ -192,7 +192,7 @@ post_upgrade() {
 	
 	# fix xfprogs version
 	export LANG=C
-	if [[ -n $(pacman -Qi xfsprogs | grep Version | grep 1:3) ]]; then
+	if [[ -n "$(pacman -Qi | grep 'xfsprogs' -m1 | grep Version | grep 1:3)" ]]; then
 		rm /var/lib/pacman/db.lck &> /dev/null
 		pacman --noconfirm -S xfsprogs
 	fi
