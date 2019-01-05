@@ -41,6 +41,17 @@ detectDE()
 }
 
 post_upgrade() {
+	# Fix dunst upgrading
+	if [ "$(pacman -Qq | grep 'dunstify' -m1)" == "dunstify" ]; then
+		if [ "$(vercmp $(pacman -Q | grep 'dunstify' -m1 | cut -d' ' -f2) 1.3.2-1)" -le 0 ]; then
+			if [ -e "/usr/bin/dunstify" ]; then
+				msg "Removing 'dunstify' to prepare smooth 'dunst' upgrade ..."
+				rm /var/lib/pacman/db.lck &> /dev/null
+				pacman --noconfirm -Rdd dunstify
+			fi
+		fi
+	fi
+
 	# Fix libutf8proc upgrading
 	if [ "$(pacman -Qq | grep 'libutf8proc' -m1)" == "libutf8proc" ]; then
 		if [ "$(vercmp $(pacman -Q | grep 'libutf8proc' -m1 | cut -d' ' -f2) 2.1.1-3)" -le 0 ]; then
