@@ -41,6 +41,15 @@ detectDE()
 }
 
 post_upgrade() {
+	# Fix systemd upgrade with systemd 239.303 installed
+	if [[ "$(vercmp $(pacman -Q | grep 'systemd' -m1 | cut -d' ' -f2) 239.6)" -gt 0 ]] && libidn2_version < 2.1.0-1 ; then
+		msg "Your system has an unsupported systemd package. Downgrading it now ..."
+		rm /var/lib/pacman/db.lck &> /dev/null
+		pacman -Syyuu
+	else
+		msg "Your system is OK, continuing normal system upgrade ..."
+	fi
+
 	# Fix dunst upgrading
 	if [ "$(pacman -Qq | grep 'dunstify' -m1)" == "dunstify" ]; then
 		if [ "$(vercmp $(pacman -Q | grep 'dunstify' -m1 | cut -d' ' -f2) 1.3.2-1)" -le 0 ]; then
