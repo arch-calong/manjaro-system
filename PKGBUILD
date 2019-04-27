@@ -1,10 +1,9 @@
-#
 # Maintainer : Philip Müller <philm@manjaro.org>
 # Maintainer : Bernhard Landauer <oberon@manjaro.org>
 
 pkgname=manjaro-system
 pkgver=$(date +%Y%m%d)
-pkgrel=1
+pkgrel=2
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')
 url="http://www.manjaro.org"
