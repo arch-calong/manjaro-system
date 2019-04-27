@@ -47,8 +47,6 @@ post_upgrade() {
             msg "Your system has an unsupported systemd package. Downgrading it now ..."
             rm /var/lib/pacman/db.lck &> /dev/null
             pacman --noconfirm -Syyuu
-        else
-        msg "Your system is OK, continuing normal system upgrade ..."
         fi
     fi
 
