@@ -1,12 +1,10 @@
 #
-# Maintainer : Philip Müller <philm[at]manjaro[dot]org>
-# Maintainer : Roland Singer <roland[at]manjaro[dot]org>
-# Contributor: Rob McCathie <rob[at]manjaro[dot]org>
-# Contributor: Alexandru Ianu <alexandru[at]manjaro[dot]org>
+# Maintainer : Philip Müller <philm@manjaro.org>
+# Maintainer : Bernhard Landauer <oberon@manjaro.org>
 
 pkgname=manjaro-system
 pkgver=$(date +%Y%m%d)
-pkgrel=3
+pkgrel=1
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')
 url="http://www.manjaro.org"
@@ -20,4 +18,3 @@ sha256sums=('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
 package() {
    install -Dm755 "$srcdir/fsck.overlay" "$pkgdir/usr/bin/fsck.overlay"
 }
-
