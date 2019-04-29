@@ -218,7 +218,7 @@ post_upgrade() {
 	fi
 
     # adjust file permissions for accountsservice >= 0.6.55
-	if [ "$(vercmp $(pacman -Q 'accountsservice' | cut -d' ' -f2) 0.6.55-1)" == -1 ]; then
+	if [ "$(vercmp $(pacman -Q | grep 'accountsservice' -m1 | cut -d' ' -f2) 0.6.55-1)" == -1 ]; then
 		msg "adjusting file permissions for Accountsservice 0.6.55 ..."
 		chmod 700 /var/lib/AccountsService/users/
 		chmod 755 /var/lib/AccountsService/icons/
