@@ -223,4 +223,17 @@ post_upgrade() {
 		chmod 700 /var/lib/AccountsService/users/
 		chmod 755 /var/lib/AccountsService/icons/
 	fi
+
+    # replace gtk3-classic with regular upstream gtk3
+    if [ "$(pacman -Qq | grep 'gtk3-classic' -m1)" == "gtk3-classic" ]; then
+        msg "replacing gkt3-classic with regular gtk3 ..."
+        msg "If you want to continue using the -classic or -mushroom version please install from the AUR."
+        rm /var/lib/pacman/db.lck &> /dev/null
+        pacman -Rdd --noconfirm gtk3-classic
+        pacman -S --noconfirm gtk3
+        if [ "$(pacman -Qq | grep 'lib32-gtk3-classic' -m1)" == "lib32-gtk3-classic" ]; then
+            pacman -Rdd --noconfirm lib32-gtk3-classic
+            pacman -S --noconfirm lib32-gtk3
+        fi
+    fi
 }
