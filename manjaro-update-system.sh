@@ -41,7 +41,7 @@ detectDE()
 }
 
 post_upgrade() {
-	# replace gtk3-classic with regular upstream gtk3 unless reinstalled since m-s 20191208-1
+	# replace gtk3-classic with regular upstream gtk3 unless reinstalled since m-s 20191210-1
 	if [[ "$(vercmp $2 20191210)" -le 0 ]] && \
 		[[ "$(pacman -Qq | grep 'gtk3-classic' -m1)" == "gtk3-classic" ]]; then
 		msg "replacing gkt3-classic with regular gtk3 ..."
