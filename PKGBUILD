@@ -3,7 +3,7 @@
 
 pkgname=manjaro-system
 pkgver=20191210
-pkgrel=2
+pkgrel=3
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')
 url="http://www.manjaro.org"
