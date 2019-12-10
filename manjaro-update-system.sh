@@ -47,6 +47,7 @@ post_upgrade() {
 		msg "replacing gkt3-classic with regular gtk3 ..."
 		msg "If you want to continue using the -classic or -mushroom version please install from the AUR."
 		rm /var/lib/pacman/db.lck &> /dev/null
+		pacman --noconfirm -Syy
 		pacman -Rdd --noconfirm gtk3-classic
 		pacman -S --noconfirm gtk3
 		if [[ "$(pacman -Qq | grep 'lib32-gtk3-classic' -m1)" == "lib32-gtk3-classic" ]]; then
