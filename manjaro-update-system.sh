@@ -75,25 +75,23 @@ post_upgrade() {
 	fi
 
 	# Fix dunst upgrading
-	if [[ "$(pacman -Qq | grep 'dunstify' -m1)" == "dunstify" ]]; then
-		if [[ "$(vercmp $(pacman -Q | grep 'dunstify' -m1 | cut -d' ' -f2) 1.3.2-1)" -le 0 ]]; then
-			if [[ -e "/usr/bin/dunstify" ]]; then
-				msg "Removing 'dunstify' to prepare smooth 'dunst' upgrade ..."
-				rm /var/lib/pacman/db.lck &> /dev/null
-				pacman --noconfirm -Rdd dunstify
-			fi
+	if [[ "$(pacman -Qq | grep 'dunstify' -m1)" == "dunstify" ]] && \
+		[[ "$(vercmp $(pacman -Q | grep 'dunstify' -m1 | cut -d' ' -f2) 1.3.2-1)" -le 0 ]]; then
+		if [[ -e "/usr/bin/dunstify" ]]; then
+			msg "Removing 'dunstify' to prepare smooth 'dunst' upgrade ..."
+			rm /var/lib/pacman/db.lck &> /dev/null
+			pacman --noconfirm -Rdd dunstify
 		fi
 	fi
 
 	# Fix libutf8proc upgrading
-	if [[ "$(pacman -Qq | grep 'libutf8proc' -m1)" == "libutf8proc" ]]; then
-		if [[ "$(vercmp $(pacman -Q | grep 'libutf8proc' -m1 | cut -d' ' -f2) 2.1.1-3)" -le 0 ]]; then
-			if [[ -e "/usr/lib/libutf8proc.so.2" ]]; then
-				msg "Fix libutf8proc upgrade ..."
-				rm -f /usr/lib/libutf8proc.so.2
-				rm /var/lib/pacman/db.lck &> /dev/null
-				pacman --noconfirm -S libutf8proc
-			fi
+	if [[ "$(pacman -Qq | grep 'libutf8proc' -m1)" == "libutf8proc" ]] && \
+		[[ "$(vercmp $(pacman -Q | grep 'libutf8proc' -m1 | cut -d' ' -f2) 2.1.1-3)" -le 0 ]]; then
+		if [[ -e "/usr/lib/libutf8proc.so.2" ]]; then
+			msg "Fix libutf8proc upgrade ..."
+			rm -f /usr/lib/libutf8proc.so.2
+			rm /var/lib/pacman/db.lck &> /dev/null
+			pacman --noconfirm -S libutf8proc
 		fi
 	fi
 
@@ -124,14 +122,13 @@ post_upgrade() {
 	fi
 
 	# Fix js52 upgrading
-	if [[ "$(pacman -Qq | grep 'js52' -m1)" == "js52" ]]; then
-		if [[ "$(vercmp $(pacman -Q | grep 'js52' -m1 | cut -d' ' -f2) 52.7.3-1)" -le 0 ]]; then
-			if [[ -e "/usr/lib/libmozjs-52.so.0" ]]; then
-				msg "Fix js52 upgrade ..."
-				rm -f /usr/lib/libmozjs-52.so.0
-				rm /var/lib/pacman/db.lck &> /dev/null
-				pacman --noconfirm -S js52
-			fi
+	if [[ "$(pacman -Qq | grep 'js52' -m1)" == "js52" ]] && \
+		[[ "$(vercmp $(pacman -Q | grep 'js52' -m1 | cut -d' ' -f2) 52.7.3-1)" -le 0 ]]; then
+		if [[ -e "/usr/lib/libmozjs-52.so.0" ]]; then
+			msg "Fix js52 upgrade ..."
+			rm -f /usr/lib/libmozjs-52.so.0
+			rm /var/lib/pacman/db.lck &> /dev/null
+			pacman --noconfirm -S js52
 		fi
 	fi
 
