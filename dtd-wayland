@@ -3,8 +3,8 @@
 # disabling Wayland for Gnome 3.36 (gnome-shell-extension-dash-to-dock >= 67-7)
 if [[ "$(pacman -Qq | grep 'gnome-shell-extension-dash-to-dock' -m1)" == "gnome-shell-extension-dash-to-dock" ]] && \
 	[[ "$(vercmp $(pacman -Q | grep 'gnome-shell-extension-dash-to-dock' -m1 | cut -d' ' -f2) 67-7)" -le 0 ]] && \
-	 [[ $XDG_SESSION_TYPE == wayland ]]; then
-		sleep 5
+	 [[ $XDG_SESSION_TYPE == wayland ]] && gnome-extensions show dash-to-dock@micxgx.gmail.com | grep -q "State: ENABLED"; then
+		sleep 3
 		gnome-extensions disable dash-to-dock@micxgx.gmail.com
 		sleep 1
 		gnome-extensions enable dash-to-dock@micxgx.gmail.com
