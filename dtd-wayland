@@ -4,7 +4,7 @@
 if [[ "$(pacman -Qq | grep 'gnome-shell-extension-dash-to-dock' -m1)" == "gnome-shell-extension-dash-to-dock" ]] && \
 	[[ "$(vercmp $(pacman -Q | grep 'gnome-shell-extension-dash-to-dock' -m1 | cut -d' ' -f2) 67-7)" -le 0 ]] && \
 	 [[ $XDG_SESSION_TYPE == wayland ]]; then
-		sleep 1
+		sleep 5
 		gnome-extensions disable dash-to-dock@micxgx.gmail.com
 		sleep 1
 		gnome-extensions enable dash-to-dock@micxgx.gmail.com

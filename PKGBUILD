@@ -15,7 +15,7 @@ source=('fsck.overlay'
 		'dtd-wayland'
 		'dtd-wayland.desktop')
 sha256sums=('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
-            '14000890d59c03d761f63b40b83e59b72adff0983f7963eb756e87dd2182305a'
+            '22bb5880758f88ac6c0307cfade317954f4e2ebc829019f958035b9d2ad24fdb'
             '1e8c6b709d915532f11ba39beedd3a9eebd3dc9658a7c343e20419417e2dbdf7')
 
 pkgver() {
@@ -25,5 +25,5 @@ pkgver() {
 package() {
    install -Dm755 "$srcdir/fsck.overlay" "$pkgdir/usr/bin/fsck.overlay"
    install -Dm755 "$srcdir/dtd-wayland" "$pkgdir/usr/bin/dtd-wayland"
-   install -Dm644 "$srcdir/dtd-wayland.desktop" "$pkgdir /etc/xdg/autostart/dtd-wayland.desktop"
+   install -Dm644 "$srcdir/dtd-wayland.desktop" "$pkgdir/etc/xdg/autostart/dtd-wayland.desktop"
 }
