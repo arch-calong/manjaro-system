@@ -42,16 +42,6 @@ detectDE()
 
 post_upgrade() {
 
-	# disabling Wayland for Gnome 3.36 (gnome-shell-extension-dash-to-dock >= 67-7)
-	if [[ "$(pacman -Qq | grep 'gnome-shell-extension-dash-to-dock' -m1)" == "gnome-shell-extension-dash-to-dock" ]] && \
-		[[ "$(vercmp $(pacman -Q | grep 'gnome-shell-extension-dash-to-dock' -m1 | cut -d' ' -f2) 67-7)" -le 0 ]]; then
-		if [[ -e /etc/gdm/custom.conf ]]; then
-			msg "disabling Wayland for Gnome 3.36 due to Shell Extensions issues ..."
-			cp /etc/gdm/custom.conf /etc/gdm/backup-$(date +%F-%H%M%S)-custom.conf
-			sed -i -e 's,.*WaylandEnable=.*,WaylandEnable=false,' /etc/gdm/custom.conf	
-		fi
-	fi
-
 	# replace gtk3-classic with regular upstream gtk3 unless reinstalled since m-s 20191208-1
 	if [[ "$(vercmp $2 20191208)" -lt 0 ]] && \
 		[[ "$(pacman -Qq | grep 'gtk3-classic' -m1)" == "gtk3-classic" ]]; then
