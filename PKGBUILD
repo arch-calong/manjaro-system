@@ -2,7 +2,7 @@
 # Maintainer : Bernhard Landauer <oberon@manjaro.org>
 
 pkgname=manjaro-system
-pkgver=20200323
+pkgver=20200324
 pkgrel=2
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')
@@ -15,7 +15,7 @@ source=('fsck.overlay'
 		'dtd-wayland'
 		'dtd-wayland.desktop')
 sha256sums=('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
-            '22bb5880758f88ac6c0307cfade317954f4e2ebc829019f958035b9d2ad24fdb'
+            'e77231241ae4004067e7f81c63dfddaa1563a5e845eeb46be4542df12e8ace3b'
             '1e8c6b709d915532f11ba39beedd3a9eebd3dc9658a7c343e20419417e2dbdf7')
 
 pkgver() {
