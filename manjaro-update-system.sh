@@ -44,7 +44,7 @@ post_upgrade() {
 
 	# Fix hplip 3.20.3-2 upgrade
 	if [[ "$(pacman -Qq | grep 'hplip' -m1)" == "hplip" ]] && \
-		[[ "$(vercmp $(pacman -Q | grep 'hplip' -m1 | cut -d' ' -f2) 3.20.3-2)" -le 0 ]]; then
+		[[ "$(vercmp $(pacman -Q | grep 'hplip' -m1 | cut -d' ' -f2) 1:3.20.3-2)" -le 0 ]]; then
 		msg "Fixing file conflicts for 'hplip' update for you ..."
 		rm /var/lib/pacman/db.lck &> /dev/null
 		pacman -S hplip --noconfirm --overwrite /usr/share/hplip/\*
