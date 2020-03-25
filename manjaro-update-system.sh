@@ -44,7 +44,7 @@ post_upgrade() {
 
 	# Fix hplip 3.20.3-2 upgrade
 	if [[ "$(pacman -Qq | grep 'hplip' -m1)" == "hplip" ]] && \
-		[[ "$(vercmp $(pacman -Q | grep 'hplip' -m1 | cut -d' ' -f2) 1:3.20.3-2)" -le 0 ]]; then
+		[[ "$(vercmp $(pacman -Q | grep 'hplip' -m1 | cut -d' ' -f2) 1:3.20.3-2)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'hplip' update for you ..."
 		rm /var/lib/pacman/db.lck &> /dev/null
 		pacman -S hplip --noconfirm --overwrite /usr/share/hplip/\*
@@ -52,7 +52,7 @@ post_upgrade() {
 
 	# Fix firewalld 0.8.1-2 upgrade
 	if [[ "$(pacman -Qq | grep 'firewalld' -m1)" == "firewalld" ]] && \
-		[[ "$(vercmp $(pacman -Q | grep 'firewalld' -m1 | cut -d' ' -f2) 0.8.1-2)" -le 0 ]]; then
+		[[ "$(vercmp $(pacman -Q | grep 'firewalld' -m1 | cut -d' ' -f2) 0.8.1-2)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'firewalld' update for you ..."
 		rm /var/lib/pacman/db.lck &> /dev/null
 		pacman -S firewalld --noconfirm --overwrite /usr/lib/python3.8/site-packages/firewall/\*
