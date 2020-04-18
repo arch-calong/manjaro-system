@@ -42,6 +42,29 @@ detectDE()
 
 post_upgrade() {
 
+	# Fix nss 3.51.1-1 upgrade
+	if [[ "$(vercmp $(pacman -Qq | grep 'nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
+		msg "Fixing file conflicts for 'nss' update for you ..."
+		rm /var/lib/pacman/db.lck &> /dev/null
+		pacman -S nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
+	fi
+
+	# Fix lib32-nss 3.51.1-1 upgrade
+	if [[ "$(pacman -Qq | grep 'lib32-nss' -m1)" == "lib32-nss" ]] && \
+		[[ "$(vercmp $(pacman -Qq | grep 'lib32-nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
+		msg "Fixing file conflicts for 'lib32-nss' update for you ..."
+		rm /var/lib/pacman/db.lck &> /dev/null
+		pacman -S lib32-nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
+	fi
+
+	# Fix zn_poly 0.9.2-2 upgrade
+	if [[ "$(pacman -Qq | grep 'zn_poly' -m1)" == "zn_poly" ]] && \
+		[[ "$(vercmp $(pacman -Qq | grep 'zn_poly' -m1 | cut -d' ' -f2) 0.9.2-2)" -lt 0 ]]; then
+		msg "Fixing file conflicts for 'zn_poly' update for you ..."
+		rm /var/lib/pacman/db.lck &> /dev/null
+		pacman -S zn_poly --noconfirm --overwrite usr/lib/libzn_poly-0.9.so
+	fi
+
 	# Fix hplip 3.20.3-2 upgrade
 	if [[ "$(pacman -Qq | grep 'hplip' -m1)" == "hplip" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'hplip' -m1 | cut -d' ' -f2) 1:3.20.3-2)" -lt 0 ]]; then
