@@ -43,7 +43,8 @@ detectDE()
 post_upgrade() {
 
 	# Fix nss 3.51.1-1 upgrade
-	if [[ "$(vercmp $(pacman -Qq | grep 'nss ' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
+	if [[ "$(pacman -Qq | grep 'nss' -m1)" == "nss" ]] && \
+        if [[ "$(vercmp $(pacman -Q | grep 'nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'nss' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
@@ -51,7 +52,7 @@ post_upgrade() {
 
 	# Fix lib32-nss 3.51.1-1 upgrade
 	if [[ "$(pacman -Qq | grep 'lib32-nss' -m1)" == "lib32-nss" ]] && \
-		[[ "$(vercmp $(pacman -Qq | grep 'lib32-nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
+		[[ "$(vercmp $(pacman -Q | grep 'lib32-nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'lib32-nss' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S lib32-nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
@@ -59,7 +60,7 @@ post_upgrade() {
 
 	# Fix zn_poly 0.9.2-2 upgrade
 	if [[ "$(pacman -Qq | grep 'zn_poly' -m1)" == "zn_poly" ]] && \
-		[[ "$(vercmp $(pacman -Qq | grep 'zn_poly' -m1 | cut -d' ' -f2) 0.9.2-2)" -lt 0 ]]; then
+		[[ "$(vercmp $(pacman -Q | grep 'zn_poly' -m1 | cut -d' ' -f2) 0.9.2-2)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'zn_poly' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S zn_poly --noconfirm --overwrite usr/lib/libzn_poly-0.9.so
