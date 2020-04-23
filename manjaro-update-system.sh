@@ -45,7 +45,7 @@ post_upgrade() {
 	# Fix nss 3.51.1-1 upgrade
 	if [[ "$(vercmp $(pacman -Qq | grep 'nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'nss' update for you ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
 	fi
 
@@ -53,7 +53,7 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'lib32-nss' -m1)" == "lib32-nss" ]] && \
 		[[ "$(vercmp $(pacman -Qq | grep 'lib32-nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'lib32-nss' update for you ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S lib32-nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
 	fi
 
@@ -61,7 +61,7 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'zn_poly' -m1)" == "zn_poly" ]] && \
 		[[ "$(vercmp $(pacman -Qq | grep 'zn_poly' -m1 | cut -d' ' -f2) 0.9.2-2)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'zn_poly' update for you ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S zn_poly --noconfirm --overwrite usr/lib/libzn_poly-0.9.so
 	fi
 
@@ -69,7 +69,7 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'hplip' -m1)" == "hplip" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'hplip' -m1 | cut -d' ' -f2) 1:3.20.3-2)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'hplip' update for you ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S hplip --noconfirm --overwrite /usr/share/hplip/\*
 	fi
 
@@ -77,7 +77,7 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'firewalld' -m1)" == "firewalld" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'firewalld' -m1 | cut -d' ' -f2) 0.8.1-2)" -lt 0 ]]; then
 		msg "Fixing file conflicts for 'firewalld' update for you ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S firewalld --noconfirm --overwrite /usr/lib/python3.8/site-packages/firewall/\*
 	fi
 
@@ -86,7 +86,7 @@ post_upgrade() {
 		[[ "$(pacman -Qq | grep 'gtk3-classic' -m1)" == "gtk3-classic" ]]; then
 		msg "replacing gkt3-classic with regular gtk3 ..."
 		msg "If you want to continue using the -classic or -mushroom version please install from the AUR."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm -Syy
 		pacman -Rdd --noconfirm gtk3-classic
 		pacman -S --noconfirm gtk3
@@ -110,7 +110,7 @@ post_upgrade() {
 		if [[ "$(pacman -Qq | grep 'libidn2' -m1)" == "libidn2" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'libidn2' -m1 | cut -d' ' -f2) 2.1.0-1)" -lt 0 ]]; then
 			msg "Your system has an unsupported systemd package. Downgrading it now ..."
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -Syyuu
 		fi
 	fi
@@ -120,7 +120,7 @@ post_upgrade() {
 		[[ "$(vercmp $(pacman -Q | grep 'dunstify' -m1 | cut -d' ' -f2) 1.3.2-1)" -le 0 ]]; then
 		if [[ -e "/usr/bin/dunstify" ]]; then
 			msg "Removing 'dunstify' to prepare smooth 'dunst' upgrade ..."
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -Rdd dunstify
 		fi
 	fi
@@ -131,7 +131,7 @@ post_upgrade() {
 		if [[ -e "/usr/lib/libutf8proc.so.2" ]]; then
 			msg "Fix libutf8proc upgrade ..."
 			rm -f /usr/lib/libutf8proc.so.2
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -S libutf8proc
 		fi
 	fi
@@ -140,12 +140,12 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'nvidia-utils' -m1)" == "nvidia-utils" ]]; then
 		if [[ "$(pacman -Qq | grep 'mhwd-nvidia-390xx' -m1)" != "mhwd-nvidia-390xx" ]]; then
 			msg "Updating mhwd database"
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -S mhwd-db
 		fi
 		if [[ -z "$(mhwd | grep " video-nvidia ")" && -n "$(mhwd-gpu | grep nvidia)" ]]; then
 			msg "Maintaining video driver at version nvidia-390xx"
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -Rdd $(pacman -Qq | grep nvidia | grep -v mhwd | grep -v toolkit)
 			pacman --noconfirm -S $($(pacman -Qq | grep nvidia | grep -v mhwd | grep -v toolkit) \
 			| sed 's|nvidia|nvidia-390xx|g')
@@ -168,7 +168,7 @@ post_upgrade() {
 		if [[ -e "/usr/lib/libmozjs-52.so.0" ]]; then
 			msg "Fix js52 upgrade ..."
 			rm -f /usr/lib/libmozjs-52.so.0
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -S js52
 		fi
 	fi
@@ -186,7 +186,7 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'sddm' -m1)" == "sddm" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'sddm' -m1 | cut -d' ' -f2) 0.17.0-4)" -le 0 ]]; then
 		msg "Fix sddm upgrade ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		if [[ -e "/etc/sddm.conf" ]]; then
 			mv /etc/sddm.conf /etc/sddm.backup
 		fi
@@ -203,7 +203,7 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'ca-certificates-utils' -m1)" == "ca-certificates-utils" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'ca-certificates-utils' -m1 | cut -d' ' -f2) 20160507-1)" -le 0 ]]; then
 		msg "Fix ca-certificates-utils upgrade ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm -Syw ca-certificates-utils
 		rm /etc/ssl/certs/ca-certificates.crt &> /dev/null
 		pacman --noconfirm -S ca-certificates-utils
@@ -224,7 +224,7 @@ post_upgrade() {
 			PKG_LIST="${PKG_LIST} lib32-mesa lib32-libglvnd"
 		fi
 		msg "Fix mesa-stack ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm -S $PKG_LIST --force
 	fi
 
@@ -234,7 +234,7 @@ post_upgrade() {
 	# packages but lib32-libnm-glib provides those files.
 	if [[ "$(pacman -Qq | grep 'lib32-libnm-glib' -m1)" != "lib32-libnm-glib" ]]; then
 		if [[ "$(pacman -Qq | grep 'lib32-libnm-glib46' -m1)" == "lib32-libnm-glib46" ]]; then
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm --force -S lib32-libnm-glib
 		fi
 	fi
@@ -246,12 +246,12 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'lib32-curl' -m1)" != "lib32-curl" ]]; then
 		if [[ "$(pacman -Qq | grep 'lib32-libcurl-gnutls' -m1)" == "lib32-libcurl-gnutls" ]] && \
 			[[ "$(vercmp $(pacman -Q | grep 'lib32-libcurl-gnutls' -m1 | cut -d' ' -f2) 7.52.1-1)" -le 0 ]]; then
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm --force -S lib32-curl
 		fi
 		if [[ "$(pacman -Qq | grep 'lib32-libcurl-compat' -m1)" == "lib32-libcurl-compat" ]] && \
 			[[ "$(vercmp $(pacman -Q | grep 'lib32-libcurl-compat' -m1 | cut -d' ' -f2) 7.52.1-1)" -le 0 ]]; then
-			rm /var/lib/pacman/db.lck &> /dev/null
+			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm --force -S lib32-curl
 		fi
 	fi
@@ -260,14 +260,14 @@ post_upgrade() {
 	if [[ "$(pacman -Qq | grep 'ttf-dejavu' -m1)" == "ttf-dejavu" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'ttf-dejavu' -m1 | cut -d' ' -f2) 2.35-1)" -le 0 ]]; then
 		msg "Fix ttf-dejavu upgrade ..."
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm --force -S ttf-dejavu
 	fi
 	
 	# fix xfprogs version
 	export LANG=C
 	if [[ -n "$(pacman -Qi | grep 'xfsprogs' -m1 | grep Version | grep 1:3)" ]]; then
-		rm /var/lib/pacman/db.lck &> /dev/null
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm -S xfsprogs
 	fi
 }
