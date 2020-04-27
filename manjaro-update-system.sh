@@ -43,8 +43,9 @@ detectDE()
 post_upgrade() {
 
 	# Fix nss 3.51.1-1 upgrade
-	if [[ "$(pacman -Qq | grep 'nss' -m1)" == "nss" ]] && \
-		[[ "$(vercmp $(pacman -Q | grep 'nss' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
+    if [[ "$(pacman -Qq | grep 'nss' -m1 -x)" == "nss" ]] && \
+        [[ "$(vercmp $(pacman -Q | grep 'nss ' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
+
 		msg "Fixing file conflicts for 'nss' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
