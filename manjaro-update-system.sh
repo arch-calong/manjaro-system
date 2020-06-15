@@ -42,6 +42,14 @@ detectDE()
 
 post_upgrade() {
 
+	# Revert hardcode fixes before we remove post-upgrade hook r539.f812186-5 upgrade
+	if [[ "$(pacman -Qq | grep 'hardcode-fixer' -m1)" == "hardcode-fixer" ]] && \
+		[[ "$(vercmp $(pacman -Q | grep 'hardcode-fixer' -m1 | cut -d' ' -f2) 1:r539.f812186-5)" -lt 0 ]]; then
+		msg "revert hardcode-fixer changes"
+		export LC_ALL=C
+		yes | sudo hardcode-fixer -r
+	fi
+
 	# Fix nss 3.51.1-1 upgrade
     if [[ "$(pacman -Qq | grep 'nss' -m1 -x)" == "nss" ]] && \
         [[ "$(vercmp $(pacman -Q | grep 'nss ' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
