@@ -45,6 +45,10 @@ post_upgrade() {
 	# Revert hardcode fixes before we remove post-upgrade hook r539.f812186-5 upgrade
 	if [[ "$(pacman -Qq | grep 'hardcode-fixer' -m1)" == "hardcode-fixer" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'hardcode-fixer' -m1 | cut -d' ' -f2) 1:r539.f812186-5)" -lt 0 ]]; then
+		msg "update hardcode-fixer to latest version"
+		rm $(pacman-conf DBPath)db.lck &> /dev/null
+		pacman --noconfirm -Syy
+		pacman -S --noconfirm hardcode-fixer
 		msg "revert hardcode-fixer changes"
 		export LC_ALL=C
 		yes | sudo hardcode-fixer -r
