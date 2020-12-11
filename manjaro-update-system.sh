@@ -41,7 +41,98 @@ detectDE()
 }
 
 post_upgrade() {
-
+	# nvidia legacy changes (Dec 2020)
+	if [[ -e /var/lib/mhwd/local/pci/video-nvidia-340xx/ ]]; then
+		msg "Maintaining video driver nvidia-340xx"
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-340xx/
+		msg "We recommend to switch over to Nouveau drivers"
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-nvidia-418xx/ ]]; then
+		msg "Maintaining video driver nvidia-418xx"
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-418xx/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/nvidia /var/lib/mhwd/local/pci/video-nvidia
+	fi	
+	if [[ -e /var/lib/mhwd/local/pci/video-nvidia-430xx/ ]]; then
+		msg "Maintaining video driver nvidia-430xx"
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-430xx/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/nvidia /var/lib/mhwd/local/pci/video-nvidia
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-nvidia-435xx/ ]]; then
+		msg "Maintaining video driver nvidia-435xx"
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-435xx/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/nvidia /var/lib/mhwd/local/pci/video-nvidia
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-nvidia-440xx/ ]]; then
+		msg "Maintaining video driver nvidia-440xx"
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-440xx/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/nvidia /var/lib/mhwd/local/pci/video-nvidia
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-nvidia-450xx/ ]]; then
+		msg "Maintaining video driver nvidia-450xx"
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-450xx/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/nvidia /var/lib/mhwd/local/pci/video-nvidia
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-nvidia-455xx/ ]]; then
+		msg "Maintaining video driver nvidia-455xx"
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-450xx/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/nvidia /var/lib/mhwd/local/pci/video-nvidia
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-340xx-bumblebee/ ]]; then
+		msg "Maintaining video driver hybrid-intel-nvidia-340xx-bumblebee"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-340xx-bumblebee/
+		msg "We recommend to switch over to Nouveau drivers"
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-418xx-bumblebee/ ]]; then
+		msg "Maintaining video driver hybrid-intel-nvidia-418xx-bumblebee"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-418xx-bumblebee/
+		msg "We recommend to switch over to Nouveau drivers"
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-430xx-bumblebee/ ]]; then
+		msg "Maintaining video driver hybrid-intel-nvidia-430xx-bumblebee"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-430xx-bumblebee/
+		msg "We recommend to switch over to Nouveau drivers"
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-435xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-intel-nvidia-435xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-435xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-intel-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-prime
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-440xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-intel-nvidia-440xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-440xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-intel-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-prime
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-450xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-intel-nvidia-450xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-450xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-intel-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-prime
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-455xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-intel-nvidia-455xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-455xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-intel-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-prime
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-435xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-amd-nvidia-435xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-435xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-amd-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-prime
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-440xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-amd-nvidia-440xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-440xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-amd-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-prime
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-450xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-amd-nvidia-450xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-450xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-amd-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-prime
+	fi
+	if [[ -e /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-455xx-prime/ ]]; then
+		msg "Maintaining video driver hybrid-amd-nvidia-455xx-prime"
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-455xx-prime/
+		cp -a /var/lib/mhwd/db/pci/graphic_drivers/hybrid-amd-nvidia-prime /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-prime
+	fi
+										
 	# Revert hardcode fixes before we remove post-upgrade hook r539.f812186-5 upgrade
 	if [[ "$(pacman -Qq | grep 'hardcode-fixer' -m1)" == "hardcode-fixer" ]] && \
 		[[ "$(vercmp $(pacman -Q | grep 'hardcode-fixer' -m1 | cut -d' ' -f2) 1:r539.f812186-5)" -lt 0 ]]; then
@@ -147,24 +238,6 @@ post_upgrade() {
 			rm -f /usr/lib/libutf8proc.so.2
 			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -S libutf8proc
-		fi
-	fi
-
-	# nvidia legacy changes (may 2018)
-	if [[ "$(pacman -Qq | grep 'nvidia-utils' -m1)" == "nvidia-utils" ]]; then
-		if [[ "$(pacman -Qq | grep 'mhwd-nvidia-390xx' -m1)" != "mhwd-nvidia-390xx" ]]; then
-			msg "Updating mhwd database"
-			rm $(pacman-conf DBPath)db.lck &> /dev/null
-			pacman --noconfirm -S mhwd-db
-		fi
-		if [[ -z "$(mhwd | grep " video-nvidia ")" && -n "$(mhwd-gpu | grep nvidia)" ]]; then
-			msg "Maintaining video driver at version nvidia-390xx"
-			rm $(pacman-conf DBPath)db.lck &> /dev/null
-			pacman --noconfirm -Rdd $(pacman -Qq | grep nvidia | grep -v mhwd | grep -v toolkit)
-			pacman --noconfirm -S $($(pacman -Qq | grep nvidia | grep -v mhwd | grep -v toolkit) \
-			| sed 's|nvidia|nvidia-390xx|g')
-			rm -r /var/lib/mhwd/local/pci/video-nvidia/
-			cp -a /var/lib/mhwd/db/pci/graphic_drivers/nvidia-390xx/ /var/lib/mhwd/local/pci/
 		fi
 	fi
 
