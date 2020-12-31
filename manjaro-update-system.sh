@@ -179,7 +179,6 @@ post_upgrade() {
 		msg "Installing Nvidia drivers for you ..."
 		mhwd -i pci video-hybrid-amd-nvidia-prime
 	fi
-	touch $(pacman-conf DBPath)db.lck
 										
 	# Revert hardcode fixes before we remove post-upgrade hook r539.f812186-5 upgrade
 	if [[ "$(pacman -Qq | grep 'hardcode-fixer' -m1)" == "hardcode-fixer" ]] && \
@@ -191,7 +190,6 @@ post_upgrade() {
 		msg "revert hardcode-fixer changes"
 		export LC_ALL=C
 		yes | sudo hardcode-fixer -r
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# Fix nss 3.51.1-1 upgrade
@@ -201,7 +199,6 @@ post_upgrade() {
 		msg "Fixing file conflicts for 'nss' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# Fix lib32-nss 3.51.1-1 upgrade
@@ -210,7 +207,6 @@ post_upgrade() {
 		msg "Fixing file conflicts for 'lib32-nss' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S lib32-nss --noconfirm --overwrite /usr/lib\*/p11-kit-trust.so
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# Fix zn_poly 0.9.2-2 upgrade
@@ -219,7 +215,6 @@ post_upgrade() {
 		msg "Fixing file conflicts for 'zn_poly' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S zn_poly --noconfirm --overwrite usr/lib/libzn_poly-0.9.so
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# Fix hplip 3.20.3-2 upgrade
@@ -228,7 +223,6 @@ post_upgrade() {
 		msg "Fixing file conflicts for 'hplip' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S hplip --noconfirm --overwrite /usr/share/hplip/\*
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# Fix firewalld 0.8.1-2 upgrade
@@ -237,7 +231,6 @@ post_upgrade() {
 		msg "Fixing file conflicts for 'firewalld' update for you ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman -S firewalld --noconfirm --overwrite /usr/lib/python3.8/site-packages/firewall/\*
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# replace gtk3-classic with regular upstream gtk3 unless reinstalled since m-s 20191208-1
@@ -253,7 +246,6 @@ post_upgrade() {
 			pacman -Rdd --noconfirm lib32-gtk3-classic
 			pacman -S --noconfirm lib32-gtk3
 		fi
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# adjust file permissions for accountsservice >= 0.6.55
@@ -272,7 +264,6 @@ post_upgrade() {
 			msg "Your system has an unsupported systemd package. Downgrading it now ..."
 			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -Syyuu
-			touch $(pacman-conf DBPath)db.lck
 		fi
 	fi
 
@@ -283,7 +274,6 @@ post_upgrade() {
 			msg "Removing 'dunstify' to prepare smooth 'dunst' upgrade ..."
 			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -Rdd dunstify
-			touch $(pacman-conf DBPath)db.lck
 		fi
 	fi
 
@@ -295,7 +285,6 @@ post_upgrade() {
 			rm -f /usr/lib/libutf8proc.so.2
 			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -S libutf8proc
-			touch $(pacman-conf DBPath)db.lck
 		fi
 	fi
 
@@ -315,7 +304,6 @@ post_upgrade() {
 			rm -f /usr/lib/libmozjs-52.so.0
 			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm -S js52
-			touch $(pacman-conf DBPath)db.lck
 		fi
 	fi
 
@@ -343,7 +331,6 @@ post_upgrade() {
 		if [[ -e "/etc/sddm.backup" ]]; then
 			mv /etc/sddm.backup /etc/sddm.conf
 		fi
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# fix upgrading ca-certificates-utils when version is 20160507-1 or less
@@ -354,7 +341,6 @@ post_upgrade() {
 		pacman --noconfirm -Syw ca-certificates-utils
 		rm /etc/ssl/certs/ca-certificates.crt &> /dev/null
 		pacman --noconfirm -S ca-certificates-utils
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# fix issue with xorg-server
@@ -374,7 +360,6 @@ post_upgrade() {
 		msg "Fix mesa-stack ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm -S $PKG_LIST --force
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# avoid upgrading problems when lib32-libnm-glib46 is installed 
@@ -385,7 +370,6 @@ post_upgrade() {
 		if [[ "$(pacman -Qq | grep 'lib32-libnm-glib46' -m1)" == "lib32-libnm-glib46" ]]; then
 			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm --force -S lib32-libnm-glib
-			touch $(pacman-conf DBPath)db.lck
 		fi
 	fi
 
@@ -404,7 +388,6 @@ post_upgrade() {
 			rm $(pacman-conf DBPath)db.lck &> /dev/null
 			pacman --noconfirm --force -S lib32-curl
 		fi
-		touch $(pacman-conf DBPath)db.lck
 	fi
 
 	# fix upgrading ttf-dejavu when version is 2.35-1 or less
@@ -413,7 +396,6 @@ post_upgrade() {
 		msg "Fix ttf-dejavu upgrade ..."
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm --force -S ttf-dejavu
-		touch $(pacman-conf DBPath)db.lck
 	fi
 	
 	# fix xfprogs version
@@ -421,6 +403,7 @@ post_upgrade() {
 	if [[ -n "$(pacman -Qi | grep 'xfsprogs' -m1 | grep Version | grep 1:3)" ]]; then
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm -S xfsprogs
-		touch $(pacman-conf DBPath)db.lck
 	fi
+	
+	touch $(pacman-conf DBPath)db.lck
 }
