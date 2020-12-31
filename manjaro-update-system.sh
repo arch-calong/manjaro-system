@@ -405,5 +405,5 @@ post_upgrade() {
 		pacman --noconfirm -S xfsprogs
 	fi
 	
-	touch $(pacman-conf DBPath)db.lck
+	[[ ! -e $(pacman-conf DBPath)db.lck ]] && touch $(pacman-conf DBPath)db.lck
 }

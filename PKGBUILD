@@ -3,13 +3,13 @@
 
 pkgname=manjaro-system
 pkgver=20201231
-pkgrel=6
+pkgrel=7
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')
 url="http://www.manjaro.org"
 license=('GPL')
 # groups=('base')
-depends=('mkinitcpio>=0.12.0-2' 'linux>=3.4' 'pacman>=5.0' 'coreutils' 'sed' 'awk' 'mhwd-db')
+depends=('mkinitcpio>=0.12.0-2' 'linux>=3.4' 'pacman>=5.0' 'coreutils' 'sed' 'awk')
 install=manjaro-update-system.sh
 source=('fsck.overlay'
 		'dtd-wayland'
