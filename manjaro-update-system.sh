@@ -58,9 +58,15 @@ install_free()
 
 post_upgrade() {
 	# nvidia legacy changes (Dec 2020)
-	msg "Checking if graphic drivers need an update ..."
-	pacman -S mhwd mhwd-db --noconfirm &> /dev/null
-	rm $(pacman-conf DBPath)db.lck &> /dev/null
+	if [[ "$(pacman -Qq | grep 'mhwd-db' -m1 -x)" == "mhwd-db" ]] && \
+        [[ "$(vercmp $(pacman -Q | grep 'mhwd-db ' -m1 | cut -d' ' -f2) 0.6.5-7)" -lt 0 ]]; then
+           msg "Checking if MHWD is needing an update ..."
+	   rm $(pacman-conf DBPath)db.lck &> /dev/null
+	   pacman -Syy &> /dev/null
+	   pacman -S mhwd mhwd-db --noconfirm
+	fi
+	if [[ ! -e /var/lib/mhwd/db/2020-12-30-update ]]; then
+        msg "Checking if graphic drivers need an update ..."	   
 	install_kernel=false
 	# remove EOL kernels first
 	if [[ "$(pacman -Qq | grep 'linux57' -m1 -x)" == "linux57" ]]; then
@@ -89,113 +95,115 @@ post_upgrade() {
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-nvidia-340xx ]]; then
 		msg "Maintaining video driver nvidia-340xx"
-		rm /var/lib/mhwd/local/pci/video-nvidia-340xx/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-340xx
 		pacman -Rdd $(pacman -Qq | grep 340xx) --noconfirm
 		install_free
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-nvidia-418xx ]]; then
 		msg "Maintaining video driver nvidia-418xx"
-		rm /var/lib/mhwd/local/pci/video-nvidia-418xx/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-418xx
 		pacman -Rdd $(pacman -Qq | grep 418xx) --noconfirm		
 		install_nvidia
 	fi	
 	if [[ -d /var/lib/mhwd/local/pci/video-nvidia-430xx ]]; then
 		msg "Maintaining video driver nvidia-430xx"
-		rm /var/lib/mhwd/local/pci/video-nvidia-430xx/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-430xx
 		pacman -Rdd $(pacman -Qq | grep 430xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-nvidia-435xx ]]; then
 		msg "Maintaining video driver nvidia-435xx"
-		rm /var/lib/mhwd/local/pci/video-nvidia-435xx/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-435xx
 		pacman -Rdd $(pacman -Qq | grep 435xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-nvidia-440xx ]]; then
 		msg "Maintaining video driver nvidia-440xx"
-		rm /var/lib/mhwd/local/pci/video-nvidia-440xx/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-440xx
 		pacman -Rdd $(pacman -Qq | grep 440xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-nvidia-450xx ]]; then
 		msg "Maintaining video driver nvidia-450xx"
-		rm /var/lib/mhwd/local/pci/video-nvidia-450xx/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-450xx
 		pacman -Rdd $(pacman -Qq | grep 450xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-nvidia-455xx ]]; then
 		msg "Maintaining video driver nvidia-455xx"
-		rm /var/lib/mhwd/local/pci/video-nvidia-455xx/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-nvidia-455xx
 		pacman -Rdd $(pacman -Qq | grep 455xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-340xx-bumblebee ]]; then
 		msg "Maintaining video driver hybrid-intel-nvidia-340xx-bumblebee"
-		rm /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-340xx-bumblebee/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-340xx-bumblebee
 		pacman -Rdd $(pacman -Qq | grep 340xx) --noconfirm		
 		install_free
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-418xx-bumblebee ]]; then
 		msg "Maintaining video driver hybrid-intel-nvidia-418xx-bumblebee"
-		rm /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-418xx-bumblebee/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-418xx-bumblebee
 		pacman -Rdd $(pacman -Qq | grep 418xx) --noconfirm		
 		msg "Installing free drivers for you ..."
 		install_free
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-430xx-bumblebee ]]; then
 		msg "Maintaining video driver hybrid-intel-nvidia-430xx-bumblebee"
-		rm /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-430xx-bumblebee/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-430xx-bumblebee
 		pacman -Rdd $(pacman -Qq | grep 430xx) --noconfirm			
 		msg "Installing free drivers for you ..."
 		install_free
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-435xx-prime ]]; then
 		msg "Maintaining video driver hybrid-intel-nvidia-435xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-435xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-435xx-prime
 		pacman -Rdd $(pacman -Qq | grep 435xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-440xx-prime ]]; then
 		msg "Maintaining video driver hybrid-intel-nvidia-440xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-440xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-440xx-prime
 		pacman -Rdd $(pacman -Qq | grep 440xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-450xx-prime ]]; then
 		msg "Maintaining video driver hybrid-intel-nvidia-450xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-450xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-450xx-prime
 		pacman -Rdd $(pacman -Qq | grep 450xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-455xx-prime ]]; then
 		msg "Maintaining video driver hybrid-intel-nvidia-455xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-455xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-intel-nvidia-455xx-prime
 		pacman -Rdd $(pacman -Qq | grep 455xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-435xx-prime ]]; then
 		msg "Maintaining video driver hybrid-amd-nvidia-435xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-435xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-435xx-prime
 		pacman -Rdd $(pacman -Qq | grep 435xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-440xx-prime ]]; then
 		msg "Maintaining video driver hybrid-amd-nvidia-440xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-440xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-440xx-prime
 		pacman -Rdd $(pacman -Qq | grep 440xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-450xx-prime ]]; then
 		msg "Maintaining video driver hybrid-amd-nvidia-450xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-450xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-450xx-prime
 		pacman -Rdd $(pacman -Qq | grep 450xx) --noconfirm		
 		install_nvidia
 	fi
 	if [[ -d /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-455xx-prime ]]; then
 		msg "Maintaining video driver hybrid-amd-nvidia-455xx-prime"
-		rm /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-455xx-prime/MHWDCONFIG
+		rm -r /var/lib/mhwd/local/pci/video-hybrid-amd-nvidia-455xx-prime
 		pacman -Rdd $(pacman -Qq | grep 455xx) --noconfirm		
 		install_nvidia
+	fi
+	touch /var/lib/mhwd/db/2020-12-30-update
 	fi
 										
 	# Revert hardcode fixes before we remove post-upgrade hook r539.f812186-5 upgrade
@@ -211,7 +219,7 @@ post_upgrade() {
 	fi
 
 	# Fix nss 3.51.1-1 upgrade
-    if [[ "$(pacman -Qq | grep 'nss' -m1 -x)" == "nss" ]] && \
+	if [[ "$(pacman -Qq | grep 'nss' -m1 -x)" == "nss" ]] && \
         [[ "$(vercmp $(pacman -Q | grep 'nss ' -m1 | cut -d' ' -f2) 3.51.1-1)" -lt 0 ]]; then
 
 		msg "Fixing file conflicts for 'nss' update for you ..."
@@ -423,5 +431,7 @@ post_upgrade() {
 		pacman --noconfirm -S xfsprogs
 	fi
 	
-	[[ ! -e $(pacman-conf DBPath)db.lck ]] && touch $(pacman-conf DBPath)db.lck
+	if [[ ! -e $(pacman-conf DBPath)db.lck ]]; then
+	    touch $(pacman-conf DBPath)db.lck
+	fi    
 }
