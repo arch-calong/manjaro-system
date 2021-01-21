@@ -2,14 +2,14 @@
 # Maintainer : Bernhard Landauer <oberon@manjaro.org>
 
 pkgname=manjaro-system
-pkgver=20210101
-pkgrel=3
+pkgver=20210121
+pkgrel=1
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')
 url="http://www.manjaro.org"
 license=('GPL')
 # groups=('base')
-depends=('mkinitcpio>=0.12.0-2' 'linux>=3.4' 'pacman>=5.0' 'coreutils' 'sed' 'awk')
+depends=('mkinitcpio>=0.12.0-2' 'pacman>=5.0' 'coreutils' 'sed' 'awk')
 install=manjaro-update-system.sh
 source=('fsck.overlay'
 		'dtd-wayland'
