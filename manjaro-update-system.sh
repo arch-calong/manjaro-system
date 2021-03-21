@@ -57,6 +57,29 @@ install_free()
 }
 
 post_upgrade() {
+	# enabling os-prober by default
+	input="/etc/default/grub"
+	checked=false
+	msg "Checking for 'os-prober' setup ..."
+	var=$(grep "GRUB_DISABLE_OS_PROBER" $input)
+        if [[ $var =~ ^GRUB_DISABLE_OS_PROBER=true ]]; then
+	      printf "    'os-prober' was already disabled by the user.\n    We don't change those settings.\n"
+	      checked=true
+	fi    
+	if [[ $var =~ ^GRUB_DISABLE_OS_PROBER=false ]]; then
+	      printf "    'os-prober' was already enabled by the user.\n"
+	      checked=true
+	fi
+	if [[ $var =~ ^#GRUB_DISABLE_OS_PROBER=false ]]; then
+	      printf "    'os-prober' is disabled by default on this system.\n    Your system won't detect other Operating Systems.\n    For enabling it, uncomment the following in '/etc/default/grub':\n    #GRUB_DISABLE_OS_PROBER=false\n"
+              checked=true
+	fi
+	if [[ $checked == false ]]; then
+	      printf "    We will reenable 'os-prober' for you ...\n"
+	      printf "\n# Uncomment this option to enable os-prober execution in the grub-mkconfig command\n" >> "$input"
+	      printf "GRUB_DISABLE_OS_PROBER=false\n" >> "$input"
+	      update-grub
+	fi	
 	# nvidia legacy changes (Dec 2020)
 	if [[ "$(pacman -Qq | grep 'mhwd-db' -m1 -x)" == "mhwd-db" ]] && \
         [[ "$(vercmp $(pacman -Q | grep 'mhwd-db ' -m1 | cut -d' ' -f2) 0.6.5-7)" -lt 0 ]]; then
