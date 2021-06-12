@@ -2,7 +2,7 @@
 # Maintainer : Bernhard Landauer <oberon@manjaro.org>
 
 pkgname=manjaro-system
-pkgver=20210523
+pkgver=20210612
 pkgrel=1
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')

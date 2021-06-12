@@ -57,6 +57,17 @@ install_free()
 }
 
 post_upgrade() {
+	# init gnupg keyring from scratch
+	# before 21.0.6 release all ISOs provided a common private gnupg keys for pacman.
+	# we need to have unique on each installation, hence we recreate them from scratch.
+	if [[ "$(vercmp $2 20210612)" -lt 0 ]]; then
+		msg "Security fix: recreating gnupg keys for pacman"
+		printf "    All systems before 21.0.6 release shipped common private keys for pacman!\n    This might take a while to complete ..."
+		/usr/bin/rm -rf /etc/pacman.d/gnupg
+		/usr/bin/pacman-key --init
+		/usr/bin/pacman-key --populate archlinux manjaro
+	fi
+	
 	# enabling os-prober by default
 	input="/etc/default/grub"
 	checked=false
