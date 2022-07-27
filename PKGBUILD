@@ -2,14 +2,14 @@
 # Maintainer : Bernhard Landauer <oberon@manjaro.org>
 
 pkgname=manjaro-system
-pkgver=20220202
-pkgrel=2
+pkgver=20220727
+pkgrel=1
 pkgdesc="Manjaro Linux System - Update script"
 arch=('any')
 url="http://www.manjaro.org"
 license=('GPL')
 # groups=('base')
-depends=('mkinitcpio>=0.12.0-2' 'pacman>=5.0' 'coreutils' 'sed' 'awk')
+depends=('mkinitcpio>=0.12.0-2' 'base')
 install=manjaro-update-system.sh
 source=('fsck.overlay'
 		'networkmanager-connectivity.hook')
