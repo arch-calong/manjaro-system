@@ -464,10 +464,6 @@ post_upgrade() {
 		rm $(pacman-conf DBPath)db.lck &> /dev/null
 		pacman --noconfirm -S xfsprogs
 	fi
-	
-	if [[ ! -e $(pacman-conf DBPath)db.lck ]]; then
-	    touch $(pacman-conf DBPath)db.lck
-	fi
 
 	# replace dbus-x11 with dbus
 	if [[ "$(pacman -Qq | grep 'dbus-x11' -m1)" == "dbus-x11" ]]; then
@@ -476,7 +472,10 @@ post_upgrade() {
 			rm $(pacman-conf DBPath)db.lck
 			pacman --noconfirm -Rdd dbus-x11
 			pacman --noconfirm -S dbus
-			touch $(pacman-conf DBPath)db.lck
 		fi
+	fi
+	
+	if [[ ! -e $(pacman-conf DBPath)db.lck ]]; then
+	    touch $(pacman-conf DBPath)db.lck
 	fi
 }
