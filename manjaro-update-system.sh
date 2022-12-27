@@ -467,5 +467,16 @@ post_upgrade() {
 	
 	if [[ ! -e $(pacman-conf DBPath)db.lck ]]; then
 	    touch $(pacman-conf DBPath)db.lck
-	fi    
+	fi
+
+	# replace dbus-x11 with dbus
+	if [[ "$(pacman -Qq | grep 'dbus-x11' -m1)" == "dbus-x11" ]]; then
+		if [[ $(pacman -Q manjaro-system | cut -d' ' -f2 | cut -d- -f 1) -le 20221227 ]]; then
+			msg "Replacing dbus-x11 with core/dbus\n    If you want to continue using dbus-x11, please install it from the AUR."
+			rm $(pacman-conf DBPath)db.lck
+			pacman --noconfirm -Rdd dbus-x11
+			pacman --noconfirm -S dbus
+			touch $(pacman-conf DBPath)db.lck
+		fi
+	fi
 }
