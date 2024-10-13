@@ -24,7 +24,7 @@ jobs:
         shell: bash
         working-directory: ${{ env.workdir }}
         run: |
-          sudo pacman -Sy base-devel git --noconfirm
+          sudo pacman -Sy base-devel git initramfs --noconfirm
       - name: Clone repos
         shell: bash
         working-directory: ${{ env.workdir }}
