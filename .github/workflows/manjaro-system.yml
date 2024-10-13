@@ -1,0 +1,43 @@
+name: manjaro-system_build
+
+env:
+  workdir: /builder
+
+on:
+  push:
+
+jobs:
+  build-bash:
+    runs-on: ubuntu-20.04
+    container:
+      image: carterjones/manjaro
+      volumes:
+        - /dev:/dev
+      options: --ulimit nofile=1024:10240 --privileged
+    timeout-minutes: 720 # timeout 12h
+    steps:
+      - name: Preserve evn set in the container
+        run: |
+          echo HOME=/builder >> "$GITHUB_ENV"
+          echo PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin >> "$GITHUB_ENV"
+      - name: Install build dependencies
+        shell: bash
+        working-directory: ${{ env.workdir }}
+        run: |
+          sudo pacman -Sy base-devel git --noconfirm
+      - name: Clone repos
+        shell: bash
+        working-directory: ${{ env.workdir }}
+        run: |
+          sed -i "s/MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j8\"/g" /etc/makepkg.conf
+          su - builder -c "git clone https://github.com/${{ github.repository }}.git -b  ${GITHUB_REF##*/} src"
+      - name: Build manjaro-system_
+        shell: bash
+        working-directory: ${{ env.workdir }}/src
+        run: |
+          su - builder -c "cd /builder/src && makepkg PKGBUILD"
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: ${{ env.workdir }}/src/*.pkg.tar.zst
