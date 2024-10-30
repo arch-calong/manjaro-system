@@ -32,14 +32,14 @@ jobs:
           sed -i "s/MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j8\"/g" /etc/makepkg.conf
           su - builder -c "git clone https://github.com/${{ github.repository }}.git -b  ${GITHUB_REF##*/} src"
       
-      - name: Build manjaro-system_
+      - name: Build
         shell: bash
         working-directory: ${{ env.workdir }}/src
         run: |
           su - builder -c "cd /builder/src && makepkg PKGBUILD"
       - name: Sign
         shell: bash
-        working-directory: ${{ env.workdir }}
+        working-directory: ${{ env.workdir }}/src
         run: |
           if [ -z "${{ secrets.CALONG_GPG_PRI }}" ] || [ -z "${{ secrets.CALONG_GPG_PASSWD }}" ]; then
               echo "## gpg credentials not provided. Skip signing."
